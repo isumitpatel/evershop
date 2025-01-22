@@ -1,33 +1,21 @@
-name: Github build
+name: build
 
-on: [pull_request]
+on: 
+    workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [ '18']
-    name: Node ${{ matrix.node }}
-
-    # env:
-    #   php-ini-values: post_max_size=256M
-    #   wp-bp-directory: src/wp-content/plugins/buddypress
-    #   DB_DATABASE: db_test
-    #   DB_USER: root
-    #   DB_PASSWORD: 'root'
-    #   DB_HOST: localhost
-
+    runs-on: self-hosted
+    
     steps:
-      # - run: |
-      #     sudo /etc/init.d/mysql start
-      #     mysql -e 'CREATE DATABASE db_test;' -uroot -proot
-      #     mysql -e 'SHOW DATABASES;' -uroot -proot
-      - uses: actions/checkout@v2
-      - name: Setup node js
-        uses: actions/setup-node@v2
+     
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4 
         with:
-          node-version: ${{ matrix.node }}
+          node-version: '18.x'
+          
       - run: npm install -g npm@9
       - run: npm install
-      - run: npm run test
